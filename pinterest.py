@@ -274,7 +274,8 @@ time.sleep(5)
                 '''
 
 def like4like_login_instgram():
-    
+    global stop_def_instagram_follow
+    global stop_def_instagram_like
     for cookies_totel in os.listdir(os.getcwd()):    
         cookies_totel_1 = cookies_totel.split('_cookies')[0]
         if cookies_totel_1=='instagram':
@@ -298,30 +299,45 @@ def like4like_login_instgram():
             if login_instgram=='https://www.instagram.com/direct/inbox/' or login_instgram=='https://www.instagram.com/direct/inbox':
                 print('login_true_insgram')
             elif login_instgram_true =='login':
+                email_2 = cookies_totel.split('instagram_cookies_')[-1].split('_pas_')[0]
+                password_2 = cookies_totel.split('_pas_')[-1].split('_n')[0]
                 time.sleep(1)
-                driver.find_element(By.NAME, 'username').send_keys(email)
+                driver.find_element(By.NAME, 'username').send_keys(email_2)
                 time.sleep(1)
-                driver.find_element(By.NAME, 'password').send_keys(password)
+                driver.find_element(By.NAME, 'password').send_keys(password_2)
                 time.sleep(1)
                 driver.find_element(By.NAME, 'password').send_keys(Keys.RETURN)
                 time.sleep(5)
-                driver.get("https://www.instagram.com")
+                driver.get("https://www.instagram.com/direct/inbox/")
                 time.sleep(5)
-                cookies = driver.get_cookies()
-                with open('{}'.format(cookies_totel), 'w', encoding='utf-8') as file:
-                    for cookie in cookies:
-                        # Check if 'expiry' exists in the cookie dictionary
-                        expiry = cookie.get('expiry', 0)
+                login_instgram_true_login = driver.current_url.split('accounts/')[-1].split('/?')[0]
+                login_instgram = driver.current_url
+                if login_instgram=='https://www.instagram.com/direct/inbox/' or login_instgram=='https://www.instagram.com/direct/inbox':
+                    print('login_username_password')
+                    '''
+                    cookies = driver.get_cookies()
+                    with open('{}'.format(cookies_totel), 'w', encoding='utf-8') as file:
+                        for cookie in cookies:
+                            # Check if 'expiry' exists in the cookie dictionary
+                            expiry = cookie.get('expiry', 0)
 
-                        file.write(
-                            f"{cookie['domain']}\t"  # Domain
-                            f"{str(cookie['domain'].startswith('.'))}\t"  # Domain Flag
-                            f"{cookie['path']}\t"  # Path
-                            f"{str(cookie['secure'])}\t"  # Secure Flag
-                            f"{expiry}\t"  # Expiry
-                            f"{cookie['name']}\t"  # Cookie Name
-                            f"{cookie['value']}\n"  # Cookie Value
-                        )
+                            file.write(
+                                f"{cookie['domain']}\t"  # Domain
+                                f"{str(cookie['domain'].startswith('.'))}\t"  # Domain Flag
+                                f"{cookie['path']}\t"  # Path
+                                f"{str(cookie['secure'])}\t"  # Secure Flag
+                                f"{expiry}\t"  # Expiry
+                                f"{cookie['name']}\t"  # Cookie Name
+                                f"{cookie['value']}\n"  # Cookie Value
+                            )
+                        '''
+                           
+                elif login_instgram_true_login=='suspended':
+                    print('suspended_instagram')
+                    stop_def_instagram_follow = 'stop'
+                    stop_def_instagram_like  = 'stop'
+                    sys.exit()
+                    
             else:
                 print('errroo')
                 print(driver.current_url)
