@@ -283,7 +283,7 @@ def like4like_login_instgram():
             email = cookies_totel.split('instagram_cookies_')[-1].split('.txt')[0]
             print(email)
             password = email.split('_pas_')[-1].split('_n')[0]
-            with open('instagram_cookies_{}.txt'.format(email.split('_pas_')[0]), 'r') as file:
+            with open('{}'.format(cookies_totel), 'r') as file:
                 cookies = file.readlines()
             for cookie in cookies:
                 fields = cookie.strip().split('\t')
