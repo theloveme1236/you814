@@ -47,6 +47,8 @@ stop_def_Subscribe = 'start'
 stop_def_like = 'start'
 stop_def_pinterest = 'start'
 stop_def_instagram = 'start'
+stop_def_instagram_follow = 'start'
+stop_def_instagram_like = 'start'
 def cookis_like():
     global driver
     for cookie in cookies:
@@ -281,7 +283,7 @@ def like4like_login_instgram():
             email = cookies_totel.split('instagram_cookies_')[-1].split('.txt')[0]
             print(email)
             password = email.split('_pas_')[-1].split('_n')[0]
-            with open('instagram_cookies_{}.txt'.format(email.split('_pas_')[0], 'r') as file:
+            with open('instagram_cookies_{}.txt'.format(email.split('_pas_')[0]), 'r') as file:
                 cookies = file.readlines()
             for cookie in cookies:
                 fields = cookie.strip().split('\t')
@@ -365,7 +367,8 @@ def failed_success_minutes():
     global stop_def_like
     global stop_def_like_con
     global stop_def_pinterest
-    
+    global stop_def_instagram_follow
+    global stop_def_instagram_like
     try:
         erro_minutes=driver.find_element(By.ID, 'error-text').text
         You_have_failed  = erro_minutes.split(' success rate validation')[0]
@@ -401,7 +404,12 @@ def failed_success_minutes():
                 collection.update_one(
                 {"email": email_to_find},
                 {"$set": {"limit_like": failed_success}})
-            
+            if current_url=='https://www.like4like.org/user/earn-instagram-follow.php':
+                stop_def_instagram_follow = 'stop'
+
+            if current_url=='https://www.like4like.org/user/earn-instagram-like.php':
+                stop_def_instagram_like = 'stop'
+                
         if erro_minutes == 'No tasks are currently available, please try again later...':
             print('No tasks are currently available')
             current_url = driver.current_url
@@ -791,10 +799,10 @@ def instagram_follow():
     for s in range(60):
         try:
 
-            if stop_def_instagram == 'stop':
-                print('stop_def_instagram')
+            if stop_def_instagram_follow == 'stop':
+                print('stop_def_instagram_follow')
                 break
-            driver.maximize_window()
+            #driver.maximize_window()
             driver.implicitly_wait(15)
             driver.find_element(By.CSS_SELECTOR, "a[class^='cursor earn_pages_button profile_view_img']").click()
             driver.switch_to.window(driver.window_handles[1])
@@ -828,8 +836,10 @@ def instagram_like():
 
     for s in range(20):
         try:
-            
-            driver.maximize_window()
+            if stop_def_instagram_like == 'stop':
+                print('stop_def_instagram_like ')
+                break
+            #driver.maximize_window()
             driver.implicitly_wait(15)
             driver.find_element(By.CSS_SELECTOR, "a[class^='cursor earn_pages_button profile_view_img']").click()
             driver.switch_to.window(driver.window_handles[1])
